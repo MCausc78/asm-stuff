@@ -9,6 +9,7 @@ section .text
 	global math_add_xyz
 	global math_sum_array
 	global math_compare
+	global make_struct
 math_add:
 	push rbp
 	mov rbp, rsp
@@ -138,5 +139,20 @@ math_compare:
 .L8:
 	mov rax, 1
 .L9:
+	leave
+	ret
+make_struct:
+	push rbp
+	mov rbp, rsp
+	
+	sub rsp, 0x18
+	
+	mov QWORD [rsp], 50
+	mov QWORD [rsp + 8], 20
+	mov QWORD [rsp + 16], 100
+	mov rax, rsp
+	
+	add rsp, 0x18
+	
 	leave
 	ret

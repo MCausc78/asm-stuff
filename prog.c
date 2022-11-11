@@ -21,6 +21,7 @@ qword string_get_length(char *);
 qword math_add_xyz(xyz_t *);
 qword math_sum_array(qword *, qword);
 signed long long math_compare(qword, qword);
+xyz_t *make_struct();
 
 int main(void) {
 	printf("Factorial of 7 according to assembly language: %llu\n", math_factorial(7));
@@ -49,5 +50,9 @@ int main(void) {
 	printf("Compare 1 with 1 according to assembly language: %lld\n", math_compare(1, 1));
 	printf("Compare 1 with 0 according to assembly language: %lld\n", math_compare(1, 0));
 	printf("Compare 1 with 2 according to assembly language: %lld\n", math_compare(1, 2));
+	xyz_t *p = make_struct();
+	printf("p->x: %llu\n", p->x);
+	printf("p->y: %llu\n", p->y);
+	printf("p->z: %llu\n", p->z);
 	return 0;
 }
