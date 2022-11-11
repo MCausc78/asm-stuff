@@ -6,6 +6,7 @@ section .text
 	global math_sq
 	global math_sub
 	global string_get_length
+	global math_add_xyz
 math_add:
 	push rbp
 	mov rbp, rsp
@@ -88,5 +89,18 @@ string_get_length:
 	inc rax
 	test dl, dl
 	jnz .L4
+	leave
+	ret
+
+math_add_xyz:
+	push rbp
+	mov rbp, rsp
+
+	xor rax, rax
+	
+	add rax, [rdi]
+	add rax, [rdi + 8]
+	add rax, [rdi + 16]
+
 	leave
 	ret

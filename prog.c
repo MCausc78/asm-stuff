@@ -3,6 +3,11 @@
 #include <string.h>
 
 typedef unsigned long long qword;
+typedef struct {
+	unsigned long long x; /* Offset: 0 */
+	unsigned long long y; /* Offset: 8 */
+	unsigned long long z; /* Offset: 16 */
+} xyz_t;
 
 qword math_add(qword, qword);
 qword math_factorial(qword);
@@ -12,6 +17,8 @@ qword math_sq(qword);
 qword math_pow(qword, qword);
 
 qword string_get_length(char *);
+
+qword math_add_xyz(xyz_t *);
 
 int main(void) {
 	printf("Factorial of 7 according to assembly language: %llu\n", math_factorial(7));
@@ -24,6 +31,12 @@ int main(void) {
 	char *s = "Hello, world!";
 	printf("Length of \"%s\" according to assembly language and C: \n", s);
 	printf("Assembly language: %llu\n", string_get_length(s));
-	printf("C language: %zu", strlen(s));
+	printf("C language: %zu\n", strlen(s));
+	xyz_t q = {
+		.x = 100,
+		.y = 200,
+		.z = 300
+	};
+	printf("Xyz(100, 200, 300) according to assembly language: %llu\n", math_add_xyz(&q));
 	return 0;
 }
