@@ -5,6 +5,7 @@ section .text
 	global math_pow
 	global math_sq
 	global math_sub
+	global string_get_length
 math_add:
 	push rbp
 	mov rbp, rsp
@@ -50,15 +51,22 @@ math_pow:
 	push rbp
 	mov rbp, rsp
 	
+	cmp rdi, 1
+	jl .L2
+	
 	mov rax, rdi
 	mov rcx, 1
-.L2:
+.L3:
 	imul rdi
 	
 	inc rcx
 	cmp rcx, rsi
-	jl .L2
+	jl .L3
 
+	leave
+	ret
+.L2:
+	mov rax, 1
 	leave
 	ret
 math_sq:
@@ -71,3 +79,14 @@ math_sq:
 	leave
 	ret
 	
+string_get_length:
+	push rbp
+	mov rbp, rsp
+	xor rax, rax
+.L4:
+	mov dl, [rdi + rax]
+	inc rax
+	test dl, dl
+	jnz .L4
+	leave
+	ret
