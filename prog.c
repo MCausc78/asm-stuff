@@ -20,6 +20,7 @@ qword string_get_length(char *);
 
 qword math_add_xyz(xyz_t *);
 qword math_sum_array(qword *, qword);
+signed long long math_compare(qword, qword);
 
 int main(void) {
 	printf("Factorial of 7 according to assembly language: %llu\n", math_factorial(7));
@@ -45,5 +46,8 @@ int main(void) {
 	};
 	/* Обязательно делим на 8, иначе получим большую цифру */
 	printf("Sum of arr according to assembly language: %llu\n", math_sum_array(arr, (sizeof arr) / 8));
+	printf("Compare 1 with 1 according to assembly language: %lld\n", math_compare(1, 1));
+	printf("Compare 1 with 0 according to assembly language: %lld\n", math_compare(1, 0));
+	printf("Compare 1 with 2 according to assembly language: %lld\n", math_compare(1, 2));
 	return 0;
 }

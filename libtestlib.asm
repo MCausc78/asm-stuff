@@ -8,6 +8,7 @@ section .text
 	global string_get_length
 	global math_add_xyz
 	global math_sum_array
+	global math_compare
 math_add:
 	push rbp
 	mov rbp, rsp
@@ -18,7 +19,6 @@ math_add:
 	
 	leave
 	ret
-
 math_sub:
 	push rbp
 	mov rbp, rsp
@@ -84,12 +84,13 @@ math_sq:
 string_get_length:
 	push rbp
 	mov rbp, rsp
-	xor rax, rax
+	mov rax, rdi
 .L4:
-	mov dl, [rdi + rax]
+	mov dl, [rax]
 	inc rax
 	test dl, dl
 	jnz .L4
+	sub rax, rdi
 	leave
 	ret
 
@@ -121,5 +122,21 @@ math_sum_array:
 	jl .L5
 	jmp .L6
 .L6:
+	leave
+	ret
+math_compare:
+	push rbp
+	mov rbp, rsp
+	xor rax, rax
+	cmp rdi, rsi
+	jl .L7
+	jg .L8
+	jmp .L9
+.L7:
+	mov rax, -1
+	jmp .L9
+.L8:
+	mov rax, 1
+.L9:
 	leave
 	ret
