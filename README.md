@@ -15,4 +15,7 @@ Square of 9 according to assembly language: 81
 6 * 9 according to assembly language: 54
 Pow(5, 5) according to assembly language: 3125
 Pow(2, 8) according to assembly language: 256
+Length of "Hello, world!" according to assembly language and C:
+Assembly language: 14
+C language: 13
 ```
