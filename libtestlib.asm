@@ -108,12 +108,11 @@ math_add_xyz:
 math_sum_array:
 	push rbp
 	mov rbp, rsp
-	mov rax, 0
+	xor rax, rax
 	test rdi, rdi
 	jz .L6
 	test rsi, rsi
 	jz .L6
-	xor rax, rax
 	xor rcx, rcx
 .L5:
 	add rax, [rdi + rcx * 8]
