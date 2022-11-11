@@ -4,9 +4,9 @@
 
 typedef unsigned long long qword;
 typedef struct {
-	unsigned long long x; /* Offset: 0 */
-	unsigned long long y; /* Offset: 8 */
-	unsigned long long z; /* Offset: 16 */
+	qword x; /* Offset: 0 */
+	qword y; /* Offset: 8 */
+	qword z; /* Offset: 16 */
 } xyz_t;
 
 qword math_add(qword, qword);
@@ -19,6 +19,7 @@ qword math_pow(qword, qword);
 qword string_get_length(char *);
 
 qword math_add_xyz(xyz_t *);
+qword math_sum_array(qword *, qword);
 
 int main(void) {
 	printf("Factorial of 7 according to assembly language: %llu\n", math_factorial(7));
@@ -38,5 +39,11 @@ int main(void) {
 		.z = 300
 	};
 	printf("Xyz(100, 200, 300) according to assembly language: %llu\n", math_add_xyz(&q));
+	qword arr[] = {
+		25, 35, 50, 31,
+		32, 124, 1231, 23
+	};
+	/* Обязательно делим на 8, иначе получим большую цифру */
+	printf("Sum of arr according to assembly language: %llu\n", math_sum_array(arr, (sizeof arr) / 8));
 	return 0;
 }

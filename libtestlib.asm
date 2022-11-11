@@ -7,6 +7,7 @@ section .text
 	global math_sub
 	global string_get_length
 	global math_add_xyz
+	global math_sum_array
 math_add:
 	push rbp
 	mov rbp, rsp
@@ -102,5 +103,24 @@ math_add_xyz:
 	add rax, [rdi + 8]
 	add rax, [rdi + 16]
 
+	leave
+	ret
+math_sum_array:
+	push rbp
+	mov rbp, rsp
+	mov rax, 0
+	test rdi, rdi
+	jz .L6
+	test rsi, rsi
+	jz .L6
+	xor rax, rax
+	xor rcx, rcx
+.L5:
+	add rax, [rdi + rcx * 8]
+	inc rcx
+	cmp rcx, rsi
+	jl .L5
+	jmp .L6
+.L6:
 	leave
 	ret
