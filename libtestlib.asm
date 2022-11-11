@@ -15,8 +15,6 @@ math_add:
 	mov rbp, rsp
 
 	lea rax, [rdi + rsi]
-	; mov rax, rdi
-	; add rax, rsi
 	
 	leave
 	ret
