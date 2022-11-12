@@ -64,5 +64,6 @@ int main(void) {
 	printf("Fibonnaci of 3 according to assembly language: %llu\n", math_fib(3));
 	printf("Fibonnaci of 7 according to assembly language: %llu\n", math_fib(7));
 	printf("Fibonnaci of 77 according to assembly language: %llu\n", math_fib(77));
+	printf("Fibonnaci of 500 according to assembly language: %llu\n", math_fib(250));
 	return 0;
 }

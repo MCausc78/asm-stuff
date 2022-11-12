@@ -23,4 +23,13 @@ Sum of arr according to assembly language: 1551
 Compare 1 with 1 according to assembly language: 0
 Compare 1 with 0 according to assembly language: 1
 Compare 1 with 2 according to assembly language: -1
+p->x: 10
+p->y: 20
+p->z: 100
+Vga_entry_color(0x00, 0x0f) according to assembly language: 240
+Vga_entry('H', 0xf0) according to assembly language: 8
+Fibonnaci of 3 according to assembly language: 2
+Fibonnaci of 7 according to assembly language: 13
+Fibonnaci of 77 according to assembly language: 5527939700884757
+Fibonnaci of 500 according to assembly language: 13814955585239639575
 ```
