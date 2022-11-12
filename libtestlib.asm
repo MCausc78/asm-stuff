@@ -15,6 +15,7 @@ section .text
 	global vga_get_index
 	global is_even
 	global is_odd
+	global math_fib
 math_add:
 	push rbp
 	mov rbp, rsp
@@ -215,5 +216,23 @@ is_odd:
 	not rax
 	and rax, 1
 	
+	leave
+	ret
+math_fib:
+	push rbp
+	mov rbp, rsp
+	mov rax, 1
+	mov rbx, 1
+	mov rcx, 3
+	cmp rcx, rdi
+	jle .L10
+.L10:
+	lea rdx, [rax + rbx]
+	mov rax, rbx
+	mov rbx, rdx
+	inc rcx
+	cmp rcx, rdi
+	jle .L10
+	mov rax, rbx
 	leave
 	ret
