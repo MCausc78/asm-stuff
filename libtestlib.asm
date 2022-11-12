@@ -13,6 +13,8 @@ section .text
 	global vga_entry_color
 	global vga_entry
 	global vga_get_index
+	global is_even
+	global is_odd
 math_add:
 	push rbp
 	mov rbp, rsp
