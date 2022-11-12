@@ -10,6 +10,9 @@ section .text
 	global math_sum_array
 	global math_compare
 	global make_struct
+	global vga_entry_color
+	global vga_entry
+	global vga_get_index
 math_add:
 	push rbp
 	mov rbp, rsp
@@ -145,12 +148,70 @@ make_struct:
 	
 	sub rsp, 0x18
 	
-	mov QWORD [rsp], 50
+	mov QWORD [rsp], 10
 	mov QWORD [rsp + 8], 20
 	mov QWORD [rsp + 16], 100
 	mov rax, rsp
 	
 	add rsp, 0x18
+	
+	leave
+	ret
+vga_entry_color:
+	push rbp
+	mov rbp, rsp
+	
+	and rdi, 0x0F
+	and rsi, 0x0F
+	
+	shl rsi, 4
+	mov rax, rdi
+	or rax, rsi
+	
+	leave
+	ret
+vga_entry:
+	push rbp
+	mov rbp, rsp
+	
+	and rdi, 0x0F
+	and rsi, 0x0F
+	
+	shl rsi, 8
+	mov rax, rdi
+	or rax, rsi
+	
+	leave
+	ret
+%define VGA_WIDTH 80
+vga_get_index:
+	push rbp
+	mov rbp, rsp
+	
+	;lea rax, [rsi * VGA_WIDTH + rdi]
+	mov rax, rsi
+	imul rax, VGA_WIDTH
+	add rax, rdi
+	
+	leave
+	ret
+is_even:
+	push rbp
+	mov rbp, rsp
+	
+	mov rax, rdi
+	not rax
+	and rax, 1
+	
+	leave
+	ret
+is_odd:
+	push rbp
+	mov rbp, rsp
+	
+	call is_even
+	not rax
+	and rax, 1
 	
 	leave
 	ret

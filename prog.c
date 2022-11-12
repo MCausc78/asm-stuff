@@ -23,6 +23,9 @@ qword math_sum_array(qword *, qword);
 signed long long math_compare(qword, qword);
 xyz_t *make_struct();
 
+unsigned char vga_entry_color(unsigned char, unsigned char);
+unsigned short vga_entry(unsigned char, unsigned short);
+
 int main(void) {
 	printf("Factorial of 7 according to assembly language: %llu\n", math_factorial(7));
 	printf("6 + 6 according to assembly language: %llu\n", math_add(6, 6));
@@ -54,5 +57,7 @@ int main(void) {
 	printf("p->x: %llu\n", p->x);
 	printf("p->y: %llu\n", p->y);
 	printf("p->z: %llu\n", p->z);
+	printf("Vga_entry_color(0x00, 0x0f) according to assembly language: %hhu\n", vga_entry_color(0, 15));
+	printf("Vga_entry('H', 0xf0) according to assembly language: %hu\n", vga_entry_color('H', 0xf0));
 	return 0;
 }
