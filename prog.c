@@ -1,13 +1,20 @@
 #include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <string.h>
+#include <errno.h>
+
+#define PRINT_ERR fprintf(stderr, "Error(%s:%d): %s\n", \
+	__FILE__,\
+	__LINE__, \
+	strerror(errno))
 
 typedef unsigned long long qword;
 typedef struct {
 	qword x; /* Offset: 0 */
 	qword y; /* Offset: 8 */
 	qword z; /* Offset: 16 */
-} xyz_t;
+} xyz_t; /* Sizeof: 24 */
 
 qword math_add(qword, qword);
 qword math_factorial(qword);
@@ -27,6 +34,55 @@ unsigned char vga_entry_color(unsigned char, unsigned char);
 unsigned short vga_entry(unsigned char, unsigned short);
 
 qword math_fib(qword);
+
+
+/* char *qword_to_string(char *, long long, unsigned char); */
+char *number_to_string(
+	long long num,
+	char *buffer,
+	unsigned char base
+) {
+	if(!buffer) {
+		return buffer;
+	}
+	char	*ptr,
+			*low,
+			*rs;
+	rs = ptr = buffer;
+
+	/* Check for minus sign */
+	if(num < 0) {
+		*ptr++ = '-';
+		num = -num;
+	}
+	low = ptr;
+
+	/* Fill buffer with numbers */	
+	do {
+		*ptr++ = "0123456789abcdefghijklmnopqrstuvwxyz"[num % base];
+	} while(num /= base);
+
+	/* Terminate string */
+	*ptr-- = '\0';
+
+	/* Reverse a string */
+	while (low < ptr) {
+		char tmp = *low++;
+		*low = *ptr--;
+		*ptr = tmp;
+	}
+	return rs;
+}
+
+char *number_to_binary_string(
+	long long num,
+	char *buffer
+) {
+	memset(buffer, 0, 64);
+	number_to_string(num, buffer, 2);
+	return buffer;
+}
+
 
 int main(void) {
 	printf("Factorial of 7 according to assembly language: %llu\n", math_factorial(7));
@@ -61,9 +117,34 @@ int main(void) {
 	printf("p->z: %llu\n", p->z);
 	printf("Vga_entry_color(0x00, 0x0f) according to assembly language: %hhu\n", vga_entry_color(0, 15));
 	printf("Vga_entry('H', 0xf0) according to assembly language: %hu\n", vga_entry_color('H', 0xf0));
-	printf("Fibonnaci of 3 according to assembly language: %llu\n", math_fib(3));
-	printf("Fibonnaci of 7 according to assembly language: %llu\n", math_fib(7));
-	printf("Fibonnaci of 77 according to assembly language: %llu\n", math_fib(77));
-	printf("Fibonnaci of 500 according to assembly language: %llu\n", math_fib(250));
+	printf("Fibonacci of 3 according to assembly language: %llu\n", math_fib(3));
+	printf("Fibonacci of 7 according to assembly language: %llu\n", math_fib(7));
+	printf("Fibonacci of 77 according to assembly language: %llu\n", math_fib(77));
+	printf("Fibonacci of 500 according to assembly language: %llu\n", math_fib(250));
+	char *buffer;
+	buffer = calloc(32, sizeof(char));
+	if(buffer) {
+		printf("Converting -129...\n");
+		number_to_string(-129, buffer, 10);
+		printf("Convert successed: to string: %s\n", buffer);
+		free(buffer);
+		goto continue_program;
+	}
+	PRINT_ERR;
+	goto continue_program;
+	continue_program:
+	
+	buffer = calloc(64, sizeof(char));
+	if(buffer) {
+		printf("Converting -7289123...\n");
+		number_to_binary_string(-7289123, buffer);
+		printf("Convert successed: to string: %s\n", buffer);
+		goto continue_program_2;
+	}
+	PRINT_ERR;
+	
+	goto continue_program_2;
+
+	continue_program_2:
 	return 0;
 }

@@ -16,6 +16,7 @@ section .text
 	global is_even
 	global is_odd
 	global math_fib
+;	global qword_to_string
 math_add:
 	push rbp
 	mov rbp, rsp
@@ -236,3 +237,35 @@ math_fib:
 	mov rax, rbx
 	leave
 	ret
+
+; char *bad__qword_to_string(char *buffer, qword number, unsigned char base);
+bad__qword_to_string:
+	push rbp
+	mov rbp, rsp
+	test rdi, rdi
+	jz .L11
+	mov rbx, rdx
+	xor rcx, rcx
+	test rsi, rsi
+	js .L14
+	jmp .L12
+.L11:
+	mov rax, rdi
+	leave
+	ret
+.L12:
+	xor rdx, rdx
+	cqo
+	idiv rax
+	add rdx, '0'
+	mov [rdi + rcx], rdx
+	inc rcx
+.L13:
+	test rsi, rsi
+	jnz .L12
+	jmp .L11
+.L14:
+	mov BYTE [rdi], '-'
+	inc rdi
+	neg rsi
+	jmp .L13
