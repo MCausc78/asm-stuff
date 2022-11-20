@@ -263,25 +263,26 @@ bad__qword_to_string:
 	inc rdi
 	neg rsi
 	jmp .L13
-math_gcd:
-	push rbp
-	mov rbp, rsp
-	mov rax, rdi
-	mov rbx, rsi
-	cmp rax, rbx
-	jmp .L17
-.L15:
-	cmp rax, rbx
-	jg .L16
-	sub rbx, rax
-	jmp .L17
-.L16:
-	sub rax, rbx
-	jmp .L17
-.L17:
-	test rbx, rbx
-	jnz .L15
-	leave
-	ret
+math_gcd:           ; int64_t math_gcd(
+    push rbp        ;  int64_t rdi,
+    mov rbp, rsp    ;  int64_t rsi) {
+    mov rax, rdi    ;  int64_t rax = rdi;
+    mov rbx, rsi    ;  int64_t rbx = rsi;
+    jmp .L17        ;  while(rbx)
+.L15:               ;  {
+    cmp rax, rbx    ;   if(!(rax > rbx)
+    jg .L16         ;   {
+    sub rbx, rax    ;    rbx -= rax;
+    jmp .L17        ;    ;
+.L16:               ;   } else {
+    sub rax, rbx    ;    rax -= rbx;
+    jmp .L17        ;    ;
+.L17:               ;   }
+    test rbx, rbx   ;   if(rbx) {
+                    ;    continue;
+    jnz .L15        ;   }
+    leave           ;  }
+    ret             ;  return rax;
+                    ; }
 section .data
 section .bss
