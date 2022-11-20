@@ -83,44 +83,44 @@ char *number_to_binary_string(
 	return buffer;
 }
 
-
+long long math_gcd(long long, long long);
 int main(void) {
-	printf("Factorial of 7 according to assembly language: %llu\n", math_factorial(7));
-	printf("6 + 6 according to assembly language: %llu\n", math_add(6, 6));
-	printf("10 - 6 according to assembly language: %llu\n", math_sub(10, 6));
-	printf("Square of 9 according to assembly language: %llu\n", math_sq(9));
-	printf("6 * 9 according to assembly language: %llu\n", math_mul(6, 9));
-	printf("Pow(5, 5) according to assembly language: %llu\n", math_pow(5, 5));
-	printf("Pow(2, 8) according to assembly language: %llu\n", math_pow(2, 8));
+	printf("Factorial of 7 according to assembly language: %llu\n", math_factorial(7LL));
+	printf("6 + 6 according to assembly language: %llu\n", math_add(6LL, 6LL));
+	printf("10 - 6 according to assembly language: %llu\n", math_sub(10LL, 6LL));
+	printf("Square of 9 according to assembly language: %llu\n", math_sq(9LL));
+	printf("6 * 9 according to assembly language: %llu\n", math_mul(6LL, 9LL));
+	printf("Pow(5, 5) according to assembly language: %llu\n", math_pow(5LL, 5LL));
+	printf("Pow(2, 8) according to assembly language: %llu\n", math_pow(2LL, 8LL));
 	char *s = "Hello, world!";
 	printf("Length of \"%s\" according to assembly language and C: \n", s);
 	printf("Assembly language: %llu\n", string_get_length(s));
 	printf("C language: %zu\n", strlen(s));
 	xyz_t q = {
-		.x = 100,
-		.y = 200,
-		.z = 300
+		.x = 100L,
+		.y = 200L,
+		.z = 300L
 	};
 	printf("Xyz(100, 200, 300) according to assembly language: %llu\n", math_add_xyz(&q));
 	qword arr[] = {
-		25, 35, 50, 31,
-		32, 124, 1231, 23
+		25LL, 35LL, 50LL, 31LL,
+		32LL, 124LL, 1231LL, 23LL
 	};
 	/* Обязательно делим на 8, иначе получим большую цифру */
 	printf("Sum of arr according to assembly language: %llu\n", math_sum_array(arr, (sizeof arr) / 8));
-	printf("Compare 1 with 1 according to assembly language: %lld\n", math_compare(1, 1));
-	printf("Compare 1 with 0 according to assembly language: %lld\n", math_compare(1, 0));
-	printf("Compare 1 with 2 according to assembly language: %lld\n", math_compare(1, 2));
+	printf("Compare 1 with 1 according to assembly language: %lld\n", math_compare(1LL, 1LL));
+	printf("Compare 1 with 0 according to assembly language: %lld\n", math_compare(1LL, 0LL));
+	printf("Compare 1 with 2 according to assembly language: %lld\n", math_compare(1LL, 2LL));
 	xyz_t *p = make_struct();
 	printf("p->x: %llu\n", p->x);
 	printf("p->y: %llu\n", p->y);
 	printf("p->z: %llu\n", p->z);
 	printf("Vga_entry_color(0x00, 0x0f) according to assembly language: %hhu\n", vga_entry_color(0, 15));
 	printf("Vga_entry('H', 0xf0) according to assembly language: %hu\n", vga_entry_color('H', 0xf0));
-	printf("Fibonacci of 3 according to assembly language: %llu\n", math_fib(3));
-	printf("Fibonacci of 7 according to assembly language: %llu\n", math_fib(7));
-	printf("Fibonacci of 77 according to assembly language: %llu\n", math_fib(77));
-	printf("Fibonacci of 500 according to assembly language: %llu\n", math_fib(250));
+	printf("Fibonacci of 3 according to assembly language: %llu\n", math_fib(3LL));
+	printf("Fibonacci of 7 according to assembly language: %llu\n", math_fib(7LL));
+	printf("Fibonacci of 77 according to assembly language: %llu\n", math_fib(77LL));
+	printf("Fibonacci of 500 according to assembly language: %llu\n", math_fib(250LL));
 	char *buffer;
 	buffer = calloc(32, sizeof(char));
 	if(buffer) {
@@ -146,5 +146,10 @@ int main(void) {
 	goto continue_program_2;
 
 	continue_program_2:
+	#define PRINT_GCD(x,y) printf("Gcd of %lld, %lld: %lld\n", (x), (y), (math_gcd((x), (y))));
+	PRINT_GCD(5LL, 25LL);
+	PRINT_GCD(150LL, 255LL);
+	PRINT_GCD(102LL, 225LL);
+	PRINT_GCD(1062LL, 2215LL);
 	return 0;
 }

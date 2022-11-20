@@ -16,6 +16,7 @@ section .text
 	global is_even
 	global is_odd
 	global math_fib
+	global math_gcd
 ;	global qword_to_string
 math_add:
 	push rbp
@@ -125,7 +126,7 @@ math_sum_array:
 	add rax, [rdi + rcx * 8]
 	inc rcx
 	cmp rcx, rsi
-	jl .L5
+	jb .L5
 	jmp .L6
 .L6:
 	leave
@@ -135,8 +136,8 @@ math_compare:
 	mov rbp, rsp
 	xor rax, rax
 	cmp rdi, rsi
-	jl .L7
-	jg .L8
+	jb .L7
+	ja .L8
 	jmp .L9
 .L7:
 	mov rax, -1
@@ -165,9 +166,6 @@ vga_entry_color:
 	push rbp
 	mov rbp, rsp
 	
-	and rdi, 0x0F
-	and rsi, 0x0F
-	
 	shl rsi, 4
 	mov rax, rdi
 	or rax, rsi
@@ -177,9 +175,6 @@ vga_entry_color:
 vga_entry:
 	push rbp
 	mov rbp, rsp
-	
-	and rdi, 0x0F
-	and rsi, 0x0F
 	
 	shl rsi, 8
 	mov rax, rdi
@@ -213,8 +208,7 @@ is_odd:
 	push rbp
 	mov rbp, rsp
 	
-	call is_even
-	not rax
+	mov rax, rdi
 	and rax, 1
 	
 	leave
@@ -246,8 +240,8 @@ bad__qword_to_string:
 	jz .L11
 	mov rbx, rdx
 	xor rcx, rcx
-	test rsi, rsi
-	js .L14
+	cmp rsi, 0
+	jl .L14
 	jmp .L12
 .L11:
 	mov rax, rdi
@@ -269,3 +263,25 @@ bad__qword_to_string:
 	inc rdi
 	neg rsi
 	jmp .L13
+math_gcd:
+	push rbp
+	mov rbp, rsp
+	mov rax, rdi
+	mov rbx, rsi
+	cmp rax, rbx
+	jmp .L17
+.L15:
+	cmp rax, rbx
+	jg .L16
+	sub rbx, rax
+	jmp .L17
+.L16:
+	sub rax, rbx
+	jmp .L17
+.L17:
+	test rbx, rbx
+	jnz .L15
+	leave
+	ret
+section .data
+section .bss
