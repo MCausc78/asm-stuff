@@ -1,11 +1,13 @@
-rm -f ./*.so prog ./*.o
+rm -frv bin/
 for d in ./programs/*
 do
 	echo "process '$d'"
 	if [ -d "$d" ]; then
 		if [ -f "$d/clean.sh" ]; then
 			echo "clean '$d'"
-			$d/clean.sh
+			cd $d
+			bash ./clean.sh
+			cd ../..
 		else
 			echo "clean.sh does not exist in '$d'"
 		fi

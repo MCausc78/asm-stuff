@@ -1,2 +1,2 @@
 #!/bin/bash
-gcc -o ./sizeof ./sizeof.c
+g++ -o ./sizeof ./sizeof.cpp

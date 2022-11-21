@@ -1,0 +1,44 @@
+#!/bin/bash
+CC=gcc
+CXX=g++
+CFLAGS="-c -I."
+CXXFLAGS="-c -I."
+CPPFLAGS=
+LD=gcc
+LDFLAGS=-shared
+AS=nasm
+ASFLAGS=-felf64
+PREFIX=/usr/local
+BIN_DIR=$PREFIX/bin
+RM=rm
+
+execute() {
+	case $1 in
+		build|"")
+			execute prebuild
+			shopt -s globstar
+			for f in **/*.asm
+			do
+				mkdir -pv "$(dirname obj/$f)"
+				$AS -o obj/$f.o $f $ASFLAGS
+			done
+			$LD -o bin/libcwa.so obj/**/*.o $LDFLAGS
+			;;
+		clean)
+			$RM -frv bin/ obj/
+			;;
+		prebuild)
+			execute clean
+			mkdir -pv bin/ obj/
+			;;
+		install)
+			
+			;;
+		uninstall)
+			;;
+		*)
+			printf "error: unknown action '$1'\n" >&2
+			exit 1
+	esac
+}
+execute $@

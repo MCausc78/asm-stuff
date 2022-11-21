@@ -1,2 +1,2 @@
 #!/bin/bash
-gcc -o ./cat ./cat.cpp
+g++ -o ./cat ./cat.cpp

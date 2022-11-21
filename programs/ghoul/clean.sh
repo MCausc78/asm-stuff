@@ -1,2 +1,2 @@
 #!/bin/bash
-rm -f ghoul ghoul.o ghoul.obj
+rm -frv ghoul ghoul.o ghoul.obj
