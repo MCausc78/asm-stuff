@@ -1,0 +1,120 @@
+#!/bin/bash
+if [ -z "$CC" ]; then
+	CC=gcc
+fi
+
+if [ -z "$CXX" ]; then
+	CXX=g++
+fi
+
+if [ -z "$CFLAGS" ]; then
+	CFLAGS=-I.
+fi
+
+if [ -z "$CXXFLAGS" ]; then
+	CXXFLAGS=-I.
+fi
+
+if [ -z "$CPPFLAGS" ]; then
+	CPPFLAGS=
+fi
+
+if [ -z "$LD" ]; then
+	LD=gcc
+fi
+
+if [ -z "$LDFLAGS" ]; then
+	LDFLAGS=
+fi
+
+if [ -z "$AS" ]; then
+	AS=nasm
+fi
+
+if [ -z "$ASFLAGS" ]; then
+	ASFLAGS=-felf64
+fi
+
+if [ -z "$PREFIX" ]; then
+	PREFIX=/usr/local
+fi
+
+if [ -z "$BIN_DIR" ]; then
+	BIN_DIR=$PREFIX/bin
+fi
+
+if [ -z "$RM" ]; then
+	RM=rm
+fi
+
+if [ -z $OUTPUT ]; then
+	OUTPUT=$(basename $PWD)
+fi
+
+execute() {
+	case $1 in
+		build|"")
+			execute prebuild
+			shopt -s globstar
+			for f in **/**.asm
+			do
+				case $f in
+					'**/**.asm') continue ;;
+				esac
+				CMD="mkdir -pv \"$(dirname obj/$f)\""
+				echo "$CMD"
+				eval "$CMD"
+				CMD="$AS -o obj/$f.o $f $ASFLAGS"
+				echo "$CMD"
+				eval "$CMD"
+			done
+			for f in **/**.c
+			do
+				case $f in
+					'**/**.c') continue ;;
+				esac
+				CMD="mkdir -pv \"$(dirname obj/$f)\""
+				echo "$CMD"
+				eval "$CMD"
+				CMD="$CC -c $CPPFLAGS -o obj/$f.o $f $CCFLAGS"
+				echo "$CMD"
+				eval "$CMD"
+			done
+			for f in **/**.cpp **/**.cxx **/**.c++
+			do
+				case $f in
+					'**/**.cpp'|'**/**.cxx'|'**/**.c++') continue ;;
+				esac
+				CMD="mkdir -pv \"$(dirname obj/$f)\""
+				echo "$CMD"
+				eval "$CMD"
+				CMD="$CXX -c $CPPFLAGS -o obj/$f.o $f $CXXFLAGS"
+				echo "$CMD"
+				eval "$CMD"
+			done
+			CMD="$LD -o bin/$OUTPUT obj/**/**.o $LDFLAGS"
+			echo "$CMD"
+			eval "$CMD"
+			;;
+		clean)
+			CMD="$RM -frv bin/ obj/"
+			echo "$CMD"
+			eval "$CMD"
+			;;
+		prebuild)
+			execute clean
+			CMD="mkdir -pv bin/ obj/"
+			echo "$CMD"
+			eval "$CMD"
+			;;
+		install)
+			
+			;;
+		uninstall)
+			;;
+		*)
+			printf "error: unknown action '$1'\n" >&2
+			exit 1
+	esac
+}
+execute $@

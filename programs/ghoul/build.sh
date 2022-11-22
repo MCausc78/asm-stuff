@@ -1,4 +1,9 @@
 #!/bin/bash
 
-nasm -felf64 ghoul.asm
-gcc -o ghoul ghoul.o
+export AS=nasm
+export ASFLAGS=-felf64
+export LD=gcc
+export LDFLAGS=
+export OUTPUT=ghoul
+
+../bt/bt build

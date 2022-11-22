@@ -1,2 +1,2 @@
 #!/bin/bash
-./bt clean
+../bt/bt clean
