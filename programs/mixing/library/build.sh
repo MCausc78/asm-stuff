@@ -2,7 +2,7 @@
 export AS=nasm
 export ASFLAGS=-felf64
 export LD=gcc
-export LDFLAGS=-shared
+export LDFLAGS='-shared -fPIC'
 export OUTPUT=libmixtest.so
 
 ../../bt/bt build

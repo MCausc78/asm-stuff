@@ -15,5 +15,4 @@ do
 	else
 		echo "'$d' is not a directory"
 	fi
-	continue
 done

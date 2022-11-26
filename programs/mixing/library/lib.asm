@@ -18,6 +18,7 @@ section .text
 	global math_fib
 	global math_gcd
 ;	global qword_to_string
+	global testing_switch
 math_add:
 	push rbp
 	mov rbp, rsp
@@ -93,7 +94,7 @@ string_get_length:
 	mov rbp, rsp
 	mov rax, rdi
 .L4:
-	mov dl, [rax]
+	mov dl, BYTE [rax]
 	inc rax
 	test dl, dl
 	jnz .L4
@@ -143,7 +144,7 @@ math_compare:
 	mov rax, -1
 	jmp .L9
 .L8:
-	mov rax, 1
+	inc rax
 .L9:
 	leave
 	ret
@@ -187,7 +188,7 @@ vga_get_index:
 	push rbp
 	mov rbp, rsp
 	
-	;lea rax, [rsi * VGA_WIDTH + rdi]
+	; lea rax, [rsi * VGA_WIDTH + rdi]
 	mov rax, rsi
 	imul rax, VGA_WIDTH
 	add rax, rdi
@@ -199,7 +200,7 @@ is_even:
 	mov rbp, rsp
 	
 	mov rax, rdi
-	not rax
+	xor rax, 1
 	and rax, 1
 	
 	leave
@@ -240,8 +241,8 @@ bad__qword_to_string:
 	jz .L11
 	mov rbx, rdx
 	xor rcx, rcx
-	cmp rsi, 0
-	jl .L14
+	test rsi, rsi
+	js .L14
 	jmp .L12
 .L11:
 	mov rax, rdi
@@ -284,5 +285,41 @@ math_gcd:           ; int64_t math_gcd(
     leave           ;  }
     ret             ;  return rax;
                     ; }
+
+testing_switch:
+	push rbp
+	mov rbp, rsp
+	; linker error, idk how to fix (-fPIC)
+	mov rax, 3014
+	cmp rdi, 0
+	je .L19
+	cmp rdi, 1
+	je .L20
+	cmp rdi, 2
+	je .L21
+	jmp .L22
+;	cmp rdi, 3
+;	ja .L22
+;	lea rax, [.L18 + rdi * 8]
+;	jmp [rax]
+.L19:
+	mov rax, 2
+	jmp .L22
+.L20:
+	mov rax, 50
+	jmp .L22
+.L21:
+	mov rax, 10000
+.L22:
+	leave
+	ret
+
 section .data
+
+; the jump table
+.L18:
+	dq testing_switch.L19
+	dq testing_switch.L20
+	dq testing_switch.L21
+
 section .bss
